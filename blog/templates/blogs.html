@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
+{% load color_article %}
+
+
 {% block content %}
     This page will show you all blogs on the website!
 
@@ -23,12 +27,13 @@
                         <span class="card-title">{{ article.author.email }}: {{ article.title }}</span>
                     </div>
                     <div class="card-content">
-                        <p>{{ article.body }}</p>
+                        <p>{{ article.body }} | {{ article.added | naturalday }} | {{ 561274862395 | intword }}</p>
                     </div>
                     <div class="card-action">
                         <a href="{% url 'single_article_page' article_id=article.id %}">Show more</a>
                     </div>
                 </div>
+            <p style="color: {{ article.title | color }};">{{ article.title }}</p>
             {% endfor %}
             Page {{ articles.number }} of {{ articles.paginator.num_pages }}.
             <ul class="pagination">

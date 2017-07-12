@@ -1,6 +1,22 @@
 from django.contrib import admin
+from django import forms
 
 from blog.models import Article
 
+from redactor.widgets import RedactorEditor
 
-admin.site.register(Article)
+
+class ArticleAdminForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = ['title', 'body', 'image', 'author']
+        widgets = {
+           'body': RedactorEditor(),
+        }
+
+
+class ArticleAdmin(admin.ModelAdmin):
+    form = ArticleAdminForm
+
+
+admin.site.register(Article, ArticleAdmin)
