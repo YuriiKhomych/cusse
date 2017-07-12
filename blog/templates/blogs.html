@@ -33,12 +33,22 @@
                         <a href="{% url 'single_article_page' article_id=article.id %}">Show more</a>
                     </div>
                 </div>
-            <p style="color: {{ article.title | color }};">{{ article.title }}</p>
+                <p style="color: {{ article.title | color }};">{{ article.title }}</p>
             {% endfor %}
             Page {{ articles.number }} of {{ articles.paginator.num_pages }}.
             <ul class="pagination">
                 {% if articles.has_previous %}
-                    <li class="waves-effect"><a href="?page={{ articles.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+                    <li class="waves-effect">
+                        <a href="?page={{ articles.previous_page_number }}">
+                            <i class="material-icons">chevron_left</i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="waves-effect">
+                        <a>
+                            <i class="material-icons">chevron_left</i>
+                        </a>
+                    </li>
                 {% endif %}
 
                 {% for page in pagination %}
@@ -57,7 +67,17 @@
                 {#                <li class="waves-effect"><a href="#!">5</a></li>#}
 
                 {% if articles.has_next %}
-                    <li class="waves-effect"><a href="?page={{ articles.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+                    <li class="waves-effect">
+                        <a href="?page={{ articles.next_page_number }}">
+                            <i class="material-icons">chevron_right</i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="waves-effect">
+                        <a>
+                            <i class="material-icons">chevron_right</i>
+                        </a>
+                    </li>
                 {% endif %}
             </ul>
         </div>
