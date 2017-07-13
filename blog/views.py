@@ -16,6 +16,7 @@ def blogs(request):
     # return HttpResponseRedirect('/qwertyui')
     # 'select * from blog_article' -> response -> django obj
     # keyword = request.POST.get('keyword', '')
+    # add product thad go through filter
     page = request.GET.get('page', 1)
     p = Paginator(Article.objects.all(), 1)
     try:
