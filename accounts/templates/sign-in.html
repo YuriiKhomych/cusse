@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>Sign in please</p>
+    <form action="{% url 'sign_in' %}" method="POST">
+        {% csrf_token %}
+
+        {% for error in form.non_field_errors %}
+            {{ error|escape }}
+        {% endfor %}
+
+        {% if form.email.errors %}
+            {{ form.email.errors }}
+        {% endif %}
+
+        {{ form.email }}
+
+        {% if form.password.errors %}
+            {{ form.password.errors }}
+        {% endif %}
+
+        {{ form.password }}
+
+        <input type="submit">
+    </form>
+{% endblock content %}

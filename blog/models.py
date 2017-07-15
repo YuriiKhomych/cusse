@@ -9,7 +9,8 @@ class Article(models.Model):
     title = models.CharField(max_length=255)
     body = models.TextField()
     image = models.FileField(upload_to=get_file_path, blank=True, null=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='author')
+    liked_by = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='liked')
     added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -9,7 +9,7 @@ from redactor.widgets import RedactorEditor
 class ArticleAdminForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'body', 'image', 'author']
+        fields = ['title', 'body', 'image', 'author', 'liked_by']
         widgets = {
            'body': RedactorEditor(),
         }

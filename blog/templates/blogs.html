@@ -31,6 +31,14 @@
                     </div>
                     <div class="card-action">
                         <a href="{% url 'single_article_page' article_id=article.id %}">Show more</a>
+
+                        <a href="{% url 'like_article' article_id=article.id %}">
+                            {% if request.user in article.liked_by.all %}
+                                Dislike me {{ article.liked_by.all.count }}
+                            {% else %}
+                                Like me {{ article.liked_by.all.count }}
+                            {% endif %}
+                        </a>
                     </div>
                 </div>
                 <p style="color: {{ article.title | color }};">{{ article.title }}</p>

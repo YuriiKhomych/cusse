@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect, Http404, get_object_or_404
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.urlresolvers import reverse
 
 from blog.models import Article
 
@@ -16,7 +17,8 @@ def blogs(request):
     # return HttpResponseRedirect('/qwertyui')
     # 'select * from blog_article' -> response -> django obj
     # keyword = request.POST.get('keyword', '')
-    # add product thad go through filter
+    # add product that go through filter
+
     page = request.GET.get('page', 1)
     p = Paginator(Article.objects.all(), 1)
     try:
@@ -49,3 +51,14 @@ def user_articles(request, user_id):
     articles = Article.objects.filter(author=user)
     return render(request, 'user-blog.html', {'articles': articles,
                                               'user': user})
+
+def like_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    if request.user in article.liked_by.all():
+        article.liked_by.remove(request.user)
+        print("dislike")
+    else:
+        article.liked_by.add(request.user)
+        print('like')
+    article.save()
+    return HttpResponseRedirect(reverse('all_articles'))

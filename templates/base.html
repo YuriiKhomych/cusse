@@ -20,6 +20,12 @@
         <a href="#" class="brand-logo">Cusse</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
             <li><a href="{% url 'all_articles' %}">Articles</a></li>
+            {% if request.user.is_authenticated %}
+                <li>Hello, {{ request.user.email }}</li>
+                <li><a href="{% url 'sign_out' %}">Sign out</a></li>
+            {% else %}
+                <li><a href="{% url 'sign_in' %}">Sign in</a></li>
+            {% endif %}
         </ul>
     </div>
 </nav>
