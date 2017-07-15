@@ -7,13 +7,16 @@
 {% block content %}
     This page will show you all blogs on the website!
 
-    <form action="{% url 'all_articles' %}" method="POST">
+    <form action="{% url 'all_articles' %}" method="GET">
         {% csrf_token %}
         <div class="row">
             <div class="input-field col s6">
-                <input name="keyword" id="keyword" type="text" class="validate">
-                <label class="active" for="keyword">Search keyword</label>
-                <button class="waves-effect waves-light btn">Search!</button>
+                <label class="active" for="{{ form.search_text.id_for_label }}">Search keyword</label>
+                <div class="">
+                    {{ form.search_text }}
+                </div>
+
+                <button type="submit" class="waves-effect waves-light btn">Search!</button>
             </div>
         </div>
     </form>

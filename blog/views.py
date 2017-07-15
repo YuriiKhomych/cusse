@@ -4,23 +4,25 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 
 from blog.models import Article
+from blog.forms import SearchForm
 
 from utils import gen_page_list
 
 
 def blogs(request):
-    # data = {
-    #     'first_name': 'John',
-    #     'last_name': 'Smith'
-    # }
-    # return HttpResponse('qwjehgqwjkeh')
-    # return HttpResponseRedirect('/qwertyui')
-    # 'select * from blog_article' -> response -> django obj
-    # keyword = request.POST.get('keyword', '')
-    # add product that go through filter
 
+    form = SearchForm(request.GET)
+    if form.is_valid():
+        # data = form.cleaned_data
+        keyword = request.GET.get('search_text', '')
+        articles = Article.objects.filter(title__contains=keyword) # How do it? (title__contains=data.get(keyword))
+    else:
+        form = SearchForm()
+        articles = Article.objects.all()
+
+    # pagination part
     page = request.GET.get('page', 1)
-    p = Paginator(Article.objects.all(), 1)
+    p = Paginator(articles, 1)
     try:
         final_articles = p.page(page)
     except PageNotAnInteger:
@@ -30,6 +32,7 @@ def blogs(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         final_articles = p.page(p.num_pages)
     return render(request, 'blogs.html', {'articles': final_articles,
+                                          'form': form,
                                           'pagination': gen_page_list(page, p.num_pages)})
 
 
