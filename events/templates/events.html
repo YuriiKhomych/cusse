@@ -20,13 +20,10 @@
                         <span class="card-title">
                         Creator of event: {{ event.creator }}<br>
                         Date of event: {{ event.date }}<br>
-                        Members: {{ event.members.all.count }}<br>
+                            <ul class="collapsible popout" data-collapsible="accordion">Members:
+                                {{ event.members.all.count }}<br>
+                                </ul>
                     </span>
-                    </div>
-                    <div class="card-stacked">
-                        <div class="card-content">
-                            <p>Members: <br> {% for onemember in event.members.all %}{{ onemember }}<br/>{% endfor %}</p>
-                        </div>
                     </div>
                     <div class="card-action">
                         <a href="{% url 'single_event_page' event_id=event.id %}">Show more</a>
