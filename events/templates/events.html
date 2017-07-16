@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col s12 m7">
+            {% for event in events %}
+                <div class="card">
+                    <h5 class="header card-panel"><b>Name of event: {{ event.title }}</b></h5>
+                    <div class="card horizontal">
+                        <div class="card-image">
+                            <img src="{% if event.image %}{{ event.image.url }}{% else %}http://placecage.com/100/100{% endif %}">
+                        </div>
+                        <span class="card-title">
+                        Creator of event: {{ event.creator }}<br>
+                        Date of event: {{ event.date }}<br>
+                        Members: {{ event.members.all.count }}<br>
+                    </span>
+                    </div>
+                    <div class="card-stacked">
+                        <div class="card-content">
+                            <p>Members: <br> {% for onemember in event.members.all %}{{ onemember }}<br/>{% endfor %}</p>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <a href="{% url 'single_event_page' event_id=event.id %}">Show more</a>
+                    </div>
+                </div>
+            {% endfor %}
+            <ul class="pagination">
+                {% if events.has_previous %}
+                    <li class="waves-effect">
+                        <a href="?page={{ events.previous_page_number }}">
+                            <i class="material-icons">chevron_left</i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="waves-effect">
+                        <a>
+                            <i class="material-icons">chevron_left</i>
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for page in pagination %}
+                    {#                    1, 2, 3, [4], 5, 6, 7, 8, 9#}
+                    <li class="waves-effect {% if page == events.number %}active{% endif %}">
+                        {% if page == '...' %}
+                            {{ page }}
+                        {% else %}
+                            <a href="?page={{ page }}">{{ page }}</a></li>
+                        {% endif %}
+                {% endfor %}
+
+                {% if events.has_next %}
+                    <li class="waves-effect">
+                        <a href="?page={{ events.next_page_number }}">
+                            <i class="material-icons">chevron_right</i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="waves-effect">
+                        <a>
+                            <i class="material-icons">chevron_right</i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock content %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+            <!--users block-->
+            {% for user in users %}
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <div class="card-panel">
+                            <p class="card-panel white-text #0091ea light-blue accent-4">Username: {{ user.username }}</p>
+                            <p class="card-panel white-text #00b0ff light-blue accent-3">Email: {{ user.email }}</p>
+                            <p class="card-panel white-text #40c4ff light-blue accent-2">Date joined to us: {{ user.date_joined | naturaltime}}</p>
+                        <a href=" {% url 'single_user_page' user_id=user.id %}" target="_blank">
+                            Show more
+                        </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- end users block-->
+
+            <!--pagination block-->
+            <div class="col-md-6 col-md-offset-3">
+                <ul class="pagination pagination-sm">
+
+                    {% if users.has_previous %}
+                        <li><a href="?page={{ users.previous_page_number }}"><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+                    {% else %}
+                        <li><a><i class="fa fa-angle-left" aria-hidden="true"></i></a></li>
+                    {% endif %}
+
+                    {% for page in pagination %}
+                        <li {% if page == users.number %} class="active" {% endif %}>
+                            <a {% if page == '...' %}
+                                >{{ page }}
+                            {% else %}
+                                href="?page={{ page }}">{{ page }}
+                            {% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {% if users.has_next %}
+                        <li><a href="?page={{ users.next_page_number }}"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    {% else %}
+                        <li><a><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+            <!-- end pagination block-->
+
+        </div>
+    </div>
+{% endblock content %}

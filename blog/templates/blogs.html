@@ -5,7 +5,6 @@
 
 
 {% block content %}
-    This page will show you all blogs on the website!
 
     <form action="{% url 'all_articles' %}" method="GET">
         {% csrf_token %}
@@ -15,7 +14,6 @@
                 <div class="">
                     {{ form.search_text }}
                 </div>
-
                 <button type="submit" class="waves-effect waves-light btn">Search!</button>
             </div>
         </div>
@@ -27,10 +25,11 @@
                 <div class="card">
                     <div class="card-image">
                         <img src="{% if article.image %}{{ article.image.url }}{% else %}http://placecage.com/500/500{% endif %}">
-                        <span class="card-title">{{ article.author.email }}: {{ article.title }}</span>
+                        <span class="card-title">{{ article.author.username }}:<br> {{ article.title }}</span>
                     </div>
                     <div class="card-content">
-                        <p>{{ article.body }} | {{ article.added | naturalday }} | {{ 561274862395 | intword }}</p>
+                        <p>{{ article.body }}</p>
+                        <p>{{ article.added | naturalday }}</p>
                     </div>
                     <div class="card-action">
                         <a href="{% url 'single_article_page' article_id=article.id %}">Show more</a>
@@ -50,7 +49,7 @@
             <ul class="pagination">
                 {% if articles.has_previous %}
                     <li class="waves-effect">
-                        <a href="?page={{ articles.previous_page_number }}">
+                        <a href="?page={{ articles.previous_page_number }}&search_text={% if  form.search_text.value == None %}{{ '' }}{% else %}{{ form.search_text.value }}{% endif %}">
                             <i class="material-icons">chevron_left</i>
                         </a>
                     </li>
@@ -68,7 +67,7 @@
                         {% if page == '...' %}
                             {{ page }}
                         {% else %}
-                            <a href="?page={{ page }}">{{ page }}</a></li>
+                            <a href="?page={{ page }}&search_text={% if  form.search_text.value == None %}{{ '' }}{% else %}{{ form.search_text.value }}{% endif %}">{{ page }}</a></li>
                         {% endif %}
                 {% endfor %}
 
@@ -79,7 +78,7 @@
 
                 {% if articles.has_next %}
                     <li class="waves-effect">
-                        <a href="?page={{ articles.next_page_number }}">
+                        <a href="?page={{ articles.next_page_number }}&search_text={% if  form.search_text.value == None %}{{ '' }}{% else %}{{ form.search_text.value }}{% endif %}">
                             <i class="material-icons">chevron_right</i>
                         </a>
                     </li>

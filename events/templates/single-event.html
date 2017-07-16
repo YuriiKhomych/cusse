@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+            <!--users block-->
+            <div class="col-md-4 col-md-offset-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <p class="white-text card-panel #ef5350 red lighten-1">
+                            <b>Information about event</b>
+                            <br> {{ event.title }}</p>
+                        <p class="white-text card-panel #ff8f00 amber darken-3">
+                            <b>Date of event</b>
+                            <br> {{ event.date }}</p>
+                        <p class="white-text card-panel #f57f17 yellow darken-4">
+                            <b>Members</b>
+                            <br> {{ event.members.all.count }}</p>
+                        <p class="white-text card-panel #ffc400 amber accent-3">
+                            <b>Creator of event</b>
+                            <br> {{ event.creator }}</p>
+                        <p class="white-text card-panel #ff9100 orange accent-3">
+                            <b>Members</b>
+                            <br> {% for onemember in event.members.all %}{{ onemember }}<br/>{% endfor %}</p>
+                    </div>
+                </div>
+            </div>
+            <!--end users block-->
+
+        </div>
+    </div>
+{% endblock content %}

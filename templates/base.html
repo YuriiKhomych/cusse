@@ -16,10 +16,12 @@
 </head>
 <body>
 <nav>
-    <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Cusse</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+    <div class="nav-wrapper #6a1b9a purple darken-3">
+        <a href="#" class="brand-logo ">Cusse</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down ">
             <li><a href="{% url 'all_articles' %}">Articles</a></li>
+            <li><a href="{% url 'all_events' %}">Events</a></li>
+            <li><a href="{% url 'all_users' %}">All users</a></li>
             {% if request.user.is_authenticated %}
                 <li>Hello, {{ request.user.email }}</li>
                 <li><a href="{% url 'sign_out' %}">Sign out</a></li>

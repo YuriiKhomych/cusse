@@ -1,19 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <p>Sign up to us</p>
-    <form action="{% url 'sign_up' %}" method="POST">
-        {% csrf_token %}
-        {% for field in form %}
-            <p>
-                {{ field.label_tag }}<br>
-                {{ field }}
-
-                {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                {% endfor %}
-            </p>
-        {% endfor %}
-        <input type="submit">
-    </form>
+    <div class="row">
+        <p>Sign up to us</p>
+        <form action="{% url 'sign_up' %}" method="POST" class="col s12">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="input-field col s12">
+                    <p>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </p>
+                </div>
+            {% endfor %}
+            <input type="submit">
+        </form>
+    </div>
 {% endblock content %}

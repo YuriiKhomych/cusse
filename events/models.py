@@ -10,4 +10,4 @@ class Event(models.Model):
     creator = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='creator')
 
     def __str__(self):
-        return self.title
+        return '{} | {}'.format(self.title, self.creator)

@@ -1,9 +1,32 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from accounts.forms import LoginForm, SignUpForm
+from accounts.models import User
+
+from utils import gen_page_list
+
+
+def all_users(request):
+    page = request.GET.get('page', 1)
+    paginator = Paginator(User.objects.all(), 10)
+    try:
+        page_come = paginator.page(page)
+    except PageNotAnInteger:
+        page_come = paginator.page(1)
+    except EmptyPage:
+        page_come = paginator.page(paginator.num_pages)
+    return render(request, 'users.html', {
+        'users': page_come,
+        'pagination': gen_page_list(page, paginator.num_pages)
+    })
+
+
+def single_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    return render(request, 'single-user.html', {'user': user})
 
 
 def sign_in(request):

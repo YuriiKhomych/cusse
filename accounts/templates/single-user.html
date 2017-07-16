@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load humanize %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+
+            <!--users block-->
+            <div class="col-md-4 col-md-offset-4">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <p class="white-text card-panel teal lighten-2">Information about: {{ user.first_name }}</p>
+                        <p class="white-text card-panel teal lighten-2">First name: {{ user.first_name }}</p>
+                        <p class="white-text card-panel teal lighten-2">Last name: {{ user.last_name }}</p>
+                        <p class="white-text card-panel teal lighten-2">Username: {{ user.username }}</p>
+                        <p class="white-text card-panel teal lighten-2">Email: {{ user.email }}</p>
+                        <p class="white-text card-panel teal lighten-2">Birthday: {{ user.birthday }}</p>
+                        <p class="white-text card-panel teal lighten-2">Date joined: {{ user.date_joined | naturaltime}}</p>
+                    </div>
+                </div>
+            </div>
+            <!--end users block-->
+
+        </div>
+    </div>
+{% endblock content %}
