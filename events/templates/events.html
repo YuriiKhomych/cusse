@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load humanize %}
+{% load rating_event %}
 
 {% block content %}
 
@@ -8,7 +9,10 @@
         <div class="col s12 m7">
             {% for event in events %}
                 <div class="card">
-                    <h5 class="header card-panel"><b>Name of event: {{ event.title }}</b></h5>
+                    <h5 class="header card-panel"><b>Name of event: {{ event.title }}
+                        <p style="color: lawngreen">{{ event.members.all.count | rating }}</p>
+
+                    </b></h5>
                     <div class="card horizontal">
                         <div class="card-image">
                             <img src="{% if event.image %}{{ event.image.url }}{% else %}http://placecage.com/100/100{% endif %}">

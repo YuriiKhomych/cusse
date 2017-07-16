@@ -11,12 +11,15 @@
                 <div class="col-md-4">
                     <div class="thumbnail">
                         <div class="card-panel">
-                            <p class="card-panel white-text #0091ea light-blue accent-4">Username: {{ user.username }}</p>
-                            <p class="card-panel white-text #00b0ff light-blue accent-3">Email: {{ user.email }}</p>
-                            <p class="card-panel white-text #40c4ff light-blue accent-2">Date joined to us: {{ user.date_joined | naturaltime}}</p>
-                        <a href=" {% url 'single_user_page' user_id=user.id %}" target="_blank">
-                            Show more
-                        </a>
+                            <p class="card-panel white-text #0091ea light-blue accent-4">
+                                Username: {{ user.username }}</p>
+                            <p class="card-panel white-text #00b0ff light-blue accent-3">
+                                Email: {{ user.email }}</p>
+                            <p class="card-panel white-text #40c4ff light-blue accent-2">
+                                Date joined to us: {{ user.date_joined | naturaltime}}</p>
+                            <a href=" {% url 'single_user_page' user_id=user.id %}" target="_blank">
+                                Show more
+                            </a>
                         </div>
                     </div>
                 </div>
