@@ -1,12 +1,20 @@
-from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, HttpResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse
+
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from accounts.forms import LoginForm, SignUpForm
 from accounts.models import User
 
+from accounts.serializers import UserSerializer, UserCreationSerializer, UserChangePasswordSerializer
+
 from utils import gen_page_list
+
 
 
 def all_users(request):
@@ -68,3 +76,44 @@ def sign_up(request):
     else:
         form = SignUpForm()
     return render(request, 'sign-up.html', {'form': form})
+
+def get_user_django(request):
+    user = User.objects.get(pk=2)
+    user_info = {
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email": user.email,
+        "username": user.username
+    }
+    return JsonResponse(user_info)
+
+
+@api_view(['GET', 'POST'])
+def get_user_rest(request):
+    if request.method == 'GET':
+        # serializer for return formatted data
+        user = User.objects.get(pk=2)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        # serializer for validation request
+        serializer = UserCreationSerializer(data=request.POST)
+        if serializer.is_valid():
+            validated_data = serializer.validated_data
+            print(validated_data)
+            return Response({'success': True})
+        else:
+            return Response(serializer.errors)
+
+
+@api_view(['POST'])
+def change_user_password(request):
+    user = User.objects.get(pk=2)
+    serializer = UserChangePasswordSerializer(data=request.POST, context={'user': user})
+    if serializer.is_valid():
+        validated_data = serializer.validated_data
+        user.set_password(validated_data.get('new_password'))
+        user.save()
+        return Response({'success': True})
+    else:
+        return Response(serializer.errors)

@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     # 3rd party apps
     'redactor',
     'solo',
+    'rest_framework',
+    'rest_framework_docs',
 ]
 
 MIDDLEWARE = [
