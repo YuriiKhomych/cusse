@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.response import Response
 
 from accounts.models import User
 from blog.models import Article
@@ -48,3 +49,16 @@ class UserChangePasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError('not equal passwords!!!!')
 
         return attrs
+
+
+
+
+class UserMainInfoSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField()
+
+    class Meta:
+        model = User
+        fields = ('email', 'password')
+
+

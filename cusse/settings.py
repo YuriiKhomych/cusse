@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'solo',
     'rest_framework',
     'rest_framework_docs',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,28 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'yuriykhomich@gmail.com'
+# EMAIL_HOST_PASSWORD = 'bhvesoga479832'
+# EMAIL_PORT = 587
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '660a1cc630284f'
+EMAIL_HOST_PASSWORD = 'ea26f3756495d0'
+EMAIL_PORT = '2525'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': (
+        'rest_framework.pagination.LimitOffsetPagination',
+    ),
+    'PAGE_SIZE': 10
+}

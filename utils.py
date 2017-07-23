@@ -1,3 +1,7 @@
+from django.core.urlresolvers import reverse
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+
 import os
 import uuid
 import random
@@ -47,3 +51,27 @@ def gen_page_list(page_number, page_count):
 
 def random_word(length):
     return ''.join(random.choice(string.ascii_lowercase) for i in range(length))
+
+
+def build_url(*args, **kwargs):
+    """
+    Reverse func with optional get params
+    """
+    get = kwargs.pop('get', {})
+    url = reverse(*args, **kwargs)
+    if get:
+        url += '?' + urllib.parse.urlencode(get)
+    return url
+
+
+def send_email(subject, user, template, content):
+    ctx = {
+        'first_name': content.get('first_name'),
+        'last_name': content.get('last_name'),
+    }
+    from_email = "no-reply@klickjam.com"
+    reply_to = "qweqwe"
+    message = get_template(template).render(ctx)
+    msg = EmailMessage(subject, message, from_email=from_email, bcc=[user], reply_to=[reply_to])
+    msg.content_subtype = 'html'
+    msg.send()
