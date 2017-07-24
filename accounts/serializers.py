@@ -23,15 +23,22 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserCreationSerializer(serializers.ModelSerializer):
+    username = serializers.CharField()
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
 
-    def validate(self, attrs):
-        if 'a' in attrs.get('username'):
-            raise serializers.ValidationError('not allowed symbol!!!!')
-
-        return attrs
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 
 class UserChangePasswordSerializer(serializers.Serializer):
@@ -60,5 +67,4 @@ class UserMainInfoSerializer(serializers.Serializer):
     class Meta:
         model = User
         fields = ('email', 'password')
-
 

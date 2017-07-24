@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
+from rest_framework.authtoken.models import Token
 
 from accounts.forms import LoginForm, SignUpForm
 from accounts.models import User
@@ -164,3 +166,42 @@ class MainUserFieldsView(APIView):
                 return Response(status=status.HTTP_404_NOT_FOUND)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class UsersView(GenericAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.all().order_by('id')
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get('pk'):
+            user = self.get_object()
+            serializer = self.serializer_class(user)
+            return Response(serializer.data)
+        else:
+            return self.list(request)
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+
+class UserCreateView(APIView):
+    model = User
+    serializer_class = UserCreationSerializer
+
+    # token = Token.objects.create(user=User.objects.get(pk=3))
+    # queryset = User.objects.all()
+    # serializer_class = UserCreationSerializer
+    #
+    # def create(self, request, *args, **kwargs):
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #     token, created = Token.objects.get_or_create(user=serializer.instance)
+    #     return Response({'token': token.key, 'id': serializer.instance.id},
+    #                     status=status.HTTP_201_CREATED, headers=headers)
