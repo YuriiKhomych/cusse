@@ -81,15 +81,16 @@ def user_articles(request, user_id):
 
 
 def like_article(request, article_id):
-    article = get_object_or_404(Article, id=article_id)
-    if request.user in article.liked_by.all():
-        article.liked_by.remove(request.user)
-        print("dislike")
+    if request.user.is_authenticated:
+        article = get_object_or_404(Article, id=article_id)
+        if request.user in article.liked_by.all():
+            article.liked_by.remove(request.user)
+        else:
+            article.liked_by.add(request.user)
+        article.save()
+        return HttpResponseRedirect(reverse('all_articles'))
     else:
-        article.liked_by.add(request.user)
-        print('like')
-    article.save()
-    return HttpResponseRedirect(reverse('all_articles'))
+        return HttpResponseRedirect(reverse('sign_up'))
 
 
 @api_view(['GET'])
@@ -175,7 +176,6 @@ class ArticleRemoveAPI(APIView):
     check if current user is author of article with request title.
     If check is correct, article with request title will be remove from base.
     """
-
     serializer_class = ArticleRemoveSerializer
     permission_classes = (IsAuthenticated,)
 
@@ -212,8 +212,8 @@ class ArticlesSearchAPI(APIView):
         if serializer.is_valid():
             keyword = serializer.validated_data.get('search_keyword')
             # filter by input user keyword in articles title and body
-            articles = Article.objects.filter(Q(
-                title__contains=keyword) | Q(body__contains=keyword))
+            articles = Article.objects.filter(
+                Q(title__contains=keyword) | Q(body__contains=keyword))
             return Response(ArticleFullDataSerializer(
                 articles, many=True).data)
         else:
